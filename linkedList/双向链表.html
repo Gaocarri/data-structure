@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 封装双向链表
+    function DoublyLinkedList() {
+      // 内部类
+      function Node(data) {
+        this.data = data
+        this.prev = null
+        this.next = null
+      }
+
+      // 属性
+      this.head = null
+      this.tail = null
+      this.length = 0
+
+      // 常见操作：方法
+      // 1.append 方法
+      DoublyLinkedList.prototype.append = function(data) {
+        // 1.根据data创建节点
+        var newNode = new Node(data)
+
+        // 2.判断是否是第一个节点
+        if (this.length == 0) {
+          this.head = newNode
+          this.tail = newNode
+        } else {
+          newNode.prev = this.tail
+          this.tail.next = newNode
+          this.tail = newNode
+        }
+
+        // 3.length+1
+        this.length += 1
+      }
+
+      // 2.将链表转成字符串形式
+      // 2.1 toString方法
+      DoublyLinkedList.prototype.toString = function() {
+          // 直接返回backwardString()
+          return this.backwardString()
+        }
+        // 2.2 forwardString方法
+      DoublyLinkedList.prototype.forwardString = function() {
+          // 1.定义变量
+          var current = this.tail
+          var resultString = ''
+            // 2.依次向后遍历，获取每一个节点
+          while (current) {
+            resultString += current.data + ' '
+            current = current.prev
+          }
+          return resultString
+        }
+        // 2.3 backwardString方法
+      DoublyLinkedList.prototype.backwardString = function() {
+        // 1.定义变量
+        var current = this.head
+        var resultString = ''
+          // 2.依次向后遍历，获取每一个节点
+        while (current) {
+          resultString += current.data + ' '
+          current = current.next
+        }
+        return resultString
+      }
+
+      // 3.insert方法
+      DoublyLinkedList.prototype.insert = function(position, data) {
+        // 1.越界判断
+        if (position < 0 || position > this.length) return false
+          // 2.根据data创建新的节点
+        var newNode = new Node(data)
+      }
+    }
+
+    // 测试代码
+    var list = new DoublyLinkedList()
+
+    // 1.测试append方法
+    list.append('aaa')
+    list.append('bbb')
+    list.append('ccc')
+    list.append('ddd')
+    console.log(list);
+
+    // 2.测试转出字符串方法
+    console.log(list.toString());
+    console.log(list.backwardString());
+    console.log(list.forwardString());
+  </script>
+</body>
+
+</html>

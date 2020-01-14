@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // Method：和某一个对象实例有关系
+    // function
+    // 封装栈类
+
+    // 1.封装栈类
+    function Stack() {
+      // 栈中的属性
+      this.items = []
+        // 栈的相关操作
+        // 1.将元素压入栈
+        // function push(this){
+
+      // } 这种方法添加方法不好，因为这样每一个new出来的对象都会有一个push实例，占用内存
+
+      Stack.prototype.push = function(element) {
+          this.items.push(element)
+        }
+        // 2.从栈顶中取出元素
+      Stack.prototype.pop = function() {
+          return this.items.pop()
+        }
+        // 3.返回栈顶元素，仅仅返回
+      Stack.prototype.peek = function() {
+          return this.items[this.items.length - 1]
+        }
+        // 4.判断栈是否为空
+      Stack.prototype.isEmpty = function() {
+          return this.items.length == 0
+        }
+        // 5.返回栈里的元素个数
+      Stack.prototype.size = function() {
+          return this.items.length
+        }
+        // 6.将栈结构的内容以字符串形式返回
+      Stack.prototype.toString = function() {
+        var resultString = ''
+        for (var i = 0; i < this.items.length; i++) {
+          resultString += this.items[i] + ''
+        }
+        return resultString
+      }
+    }
+
+    // 栈的使用
+    var s = new Stack()
+    s.push(208) //压栈
+    s.push(10)
+    s.push(7)
+    s.push(4)
+    s.push(100)
+    s.push(13)
+    console.log(s);
+    s.pop() //弹栈
+    console.log(s);
+    console.log(s.peek()) //返回栈顶元素，仅仅返回
+    console.log(s.isEmpty()) //判断栈是否为空
+    console.log(s.size()); //返回栈里的元素个数
+    console.log(s.toString()); //将栈结构的内容以字符串形式返回
+
+    // 函数：将十进制转为二进制
+    function dec2bin(decNumber) {
+      // 1.定义栈对象
+      var stack = new Stack()
+
+      // 2.循环操作
+      while (decNumber > 0) {
+        // 2.1获取余数并放到栈中
+        stack.push(decNumber % 2)
+          // 2.2获取整除后的结果作为下一次运行的数字
+        decNumber = Math.floor(decNumber / 2)
+      }
+      // 3.从栈中取出0和1
+      var binaryString = ''
+      while (!stack.isEmpty()) {
+        binaryString += stack.pop()
+      }
+      return binaryString
+    }
+    alert(dec2bin(100))
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 基于数组实现性能不高(因为删除，从前面删除后，每个元素要往前移动)
+    // 封装队列类
+    function Queue() {
+      // 属性
+      this.items = []
+        // 方法
+        // 1.将元素加入到队列
+      Queue.prototype.enqueue = function(element) {
+          return this.items.push(element)
+        }
+        // 2.从队列中删除前端元素
+      Queue.prototype.dequeue = function() {
+          return this.items.shift()
+        }
+        // 3.查看前端元素
+      Queue.prototype.front = function() {
+          return this.items[0]
+        }
+        // 4.查看队列是否为空
+      Queue.prototype.isEmpty = function() {
+          return this.items.length == 0
+        }
+        // 5.查看队列中元素的个数
+      Queue.prototype.size = function() {
+          return this.items.length
+        }
+        // 6.toString方法
+      Queue.prototype.toString = function() {
+        var resultString = ''
+        for (var i = 0; i < this.items.length; i++) {
+          resultString += this.items[i] + ''
+        }
+        return resultString
+      }
+    }
+
+    // 使用队列
+    var queue = new Queue()
+    queue.enqueue('abc')
+    queue.enqueue('cba')
+    queue.enqueue('nba')
+    queue.enqueue('mba')
+      // alert(queue)
+
+    queue.dequeue()
+      // alert(queue)
+
+    // alert(queue.front())
+    // alert(queue.isEmpty())
+    // alert(queue.size())
+    // alert(queue.toString())
+
+    // 面试题:击鼓传花
+    function passGame(nameList, num) {
+      // 1.创建一个队列
+      var queue = new Queue()
+        // 2.将所有人依次加入到队列中
+      for (var i = 0; i < nameList.length; i++) {
+        queue.enqueue(nameList[i])
+      }
+      // 3. 开始数数字
+      while (queue.size() > 1) {
+        // 不是num的时候，重新加入到队列的末尾
+        // 是num的时候，将其从队列中删除
+        // 3.1num数字之前的人重新放入到队列的末尾
+        for (var i = 0; i < num - 1; i++) {
+          queue.enqueue(queue.dequeue())
+        }
+        // 3.2num对应的人删除掉
+        queue.dequeue()
+      }
+      var endName = queue.front()
+      return nameList.indexOf(endName)
+    }
+
+    nameList = ['Lily', 'Tom', 'LiLei', 'carri', 'taozi']
+
+    console.log(passGame(nameList, 3));
+  </script>
+</body>
+
+</html>
