@@ -806,3 +806,81 @@ JS数组就是API的调用
 
 * 一种特殊的数组，**没有顺序，也不能重复**
 * 没有顺序意味着**不能通过下标值访问**，不能重复意味着**相同的对象**在集合中只会**存在一份**
+* 就是ES6里的Set
+
+2. 封装集合类
+
+```javascript
+    // 封装集合类
+    function Set() {
+      // 属性
+      this.items = {}
+
+      // 方法
+      // add方法
+      Set.prototype.add = function(value) {
+        // 判断当前集合中是否已经包含了该元素
+        if (this.has(value)) return false
+
+        //将元素添加到集合中
+        this.items[value] = value
+        return true
+      }
+
+      // has方法
+      Set.prototype.has = function(value) {
+        return this.items.hasOwnProperty(value)
+      }
+
+      // remove方法
+      Set.prototype.remove = function(value) {
+        // 1.判断该集合中是否包含该元素
+        if (!this.has(value)) {
+          return false
+        }
+
+        // 2.将元素从属性中删除
+        // delete操作符删除对象的某个属性
+        delete this.items[value]
+        return true
+      }
+
+      // clear方法
+      Set.prototype.clear = function() {
+        this.items = {}
+      }
+
+      // size方法
+      Set.prototype.size = function() {
+        return Object.keys(this.items).length
+      }
+
+      // 获取集合中所有的值
+      Set.prototype.values = function() {
+        return Object.keys(this.items)
+      }
+    }
+
+    // 测试Set类
+    var set = new Set()
+
+    // 添加元素
+    set.add('aaa')
+    set.add('bbb')
+    set.add('ccc')
+    set.add('ddd')
+    console.log(set);
+
+    // has
+    console.log(set.has('aaa'));
+
+    // remove
+    set.remove('aaa')
+    console.log(set);
+
+    // size
+    console.log(set.size());
+    // values
+    console.log(set.values());
+```
+

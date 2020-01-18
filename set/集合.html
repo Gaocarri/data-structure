@@ -58,6 +58,27 @@
       Set.prototype.values = function() {
         return Object.keys(this.items)
       }
+
+      // 集合间操作
+      // 并集
+      Set.prototype.union = function(otherSet) {
+        // 1.创建一个新的集合
+        var unionSet = new Set()
+
+        // 2.将A集合中所有的元素添加到新集合中
+        var values = this.values()
+        for (var i = 0; i < values.length; i++) {
+          unionSet.add(values[i])
+        }
+
+        // 3.取出B集合中的新的元素，判断是否需要添加到新集合
+        values = otherSet.values()
+        for (var i = 0; i < values.length; i++) {
+          unionSet.add(values[i])
+        }
+
+        return unionSet
+      }
     }
 
     // 测试Set类
