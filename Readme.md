@@ -884,3 +884,100 @@ JS数组就是API的调用
     console.log(set.values());
 ```
 
+3. 集合间操作
+
+* 并集
+
+```javascript
+      Set.prototype.union = function(otherSet) {
+        // 1.创建一个新的集合
+        var unionSet = new Set()
+
+        // 2.将A集合中所有的元素添加到新集合中
+        var values = this.values()
+        for (var i = 0; i < values.length; i++) {
+          unionSet.add(values[i])
+        }
+
+        // 3.取出B集合中的新的元素，判断是否需要添加到新集合
+        values = otherSet.values()
+        for (var i = 0; i < values.length; i++) {
+          unionSet.add(values[i])
+        }
+
+        return unionSet
+      }
+```
+
+* 交集
+
+```javascript
+      // 交集
+      Set.prototype.intersection  =function(otherSet){
+        // this集合A
+        // otherSet 集合B
+        // 1.创建新的集合
+        var intersectionSet = new Set()
+
+        // 2.从A中取出一个个元素，判断是否同时存在于集合B中，存放在新集合中
+        var values = this.values()
+        for(var i = 0;i<values.length;i++){
+          var item = values[i]
+          if(otherSet.has(item)){
+            intersectionSet.add(item)
+          }
+        }
+          
+          return intersectionSet
+      }
+```
+
+
+
+* 差集
+
+```javascript
+ // 差集（x存在于A当中，但不存在于B当中）
+      Set.prototype.difference = function(otherSet) {
+        // this集合A
+        // otherSet 集合B
+        // 1.创建新的集合
+        var differenceSet = new Set()
+
+        // 2.取出A集合一个个元素，判断是否同时存在于B中，不存在B中，则添加到新集合中
+        var values = this.values()
+        for (var i = 0; i < values.length; i++) {
+          var item = values[i]
+          if (!otherSet.has(item)) {
+            differenceSet.add(item)
+          }
+        }
+
+        return differenceSet
+      }
+```
+
+
+
+* 子集
+
+```javascript
+      //子集（A是B的子集）
+      Set.prototype.subset = function(otherSet) {
+        // this集合A
+        // otherSet 集合B
+        // 遍历集合A中所有的元素，如果发现集合A中的元素，在集合B中不存在，那么false
+        // 如果遍历完了整个集合，依然没有返回false,那么返回true即可
+        var values = this.values()
+        for (var i = 0; i < values.length; i++) {
+          var item = values[i]
+          if (otherSet.has(item)) {
+            return false
+          }
+        }
+        return true
+      }
+```
+
+
+
