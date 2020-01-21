@@ -1087,6 +1087,7 @@ JS数组就是API的调用
 8. 哈希表的实现
 
 ```javascript
+<script>
 
 ```
 
