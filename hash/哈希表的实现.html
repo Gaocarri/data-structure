@@ -67,6 +67,11 @@
         // 4.新增操作
         bucket.push([key, value])
         this.count += 1
+
+        // 5.判断是否需要扩容操作
+        if (this.count > this.limit * 0.75) {
+          this.resize(this.limit * 2)
+        }
       }
 
       // 获取方法
@@ -109,7 +114,11 @@
               return tuple[1]
           }
         }
-        // 5.依然没有找到那么返回null
+        // 5.缩小容量
+        if (this.count > 7 && this.count < this.limit * 0.25) {
+          this.resize(Math.floor(this.limit / 2))
+        }
+        // 6.依然没有找到那么返回null
         return null
       }
 
@@ -122,6 +131,34 @@
       // 获取哈希表中元素的个数
       HashTable.prototype, size = function() {
         return this.count
+      }
+
+      // 哈希表的扩容/缩容
+      HashTable.prototype.resize = function(newLimit) {
+        // 1.保存旧的数组内容
+        var oldStorage = this.storage
+
+        // 2.重置所有的属性
+        this.storage = []
+        this.count = 0
+        this.limit = newLimit
+
+        // 3.遍历oldStorage中所有的bucket
+        for (var i = 0; i < oldStorage.length; i++) {
+          // 3.1取出对应的bucket
+          var bucket = oldStorage[i]
+
+          // 3.2判断bucket是否为null
+          if (bucket == null) {
+            continue
+          }
+
+          // 3.3 bucket中有数据，那么取出数据，重新插入
+          for (var j = 0; j < bucket.length; j++) {
+            var tuple = bucket[j]
+            this.put(tuple[0], tuple[1])
+          }
+        }
       }
     }
 

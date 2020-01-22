@@ -1229,6 +1229,51 @@ JS数组就是API的调用
     console.log(ht);
 ```
 
-9. 哈希表的扩容
+9. 哈希表的扩容/缩容
+
+* 为什么需要扩容
 
 目前，所有数据项都存在**长度为7的数组中**，因为使用的是链地址法，**loadFactor**可以大于1，所以这个哈希表可以无限制的插入新数据，但是随着数据量的增多，每个index对应的bucket会越来越长，也就造车过了**效率的降低**，所以需要扩容
+
+* 如何扩容
+
+可以简单的将容量**扩大两倍**（不是质数，质数第10会解决），但是这种情况下，所有的**数据项一定要同时进行修改**
+
+* 什么情况下扩容
+
+比较常见的是loadFactor>0.75的时候进行扩容
+
+* 代码(再在add和remove方法后判断是否扩容)
+
+```javascript
+ // 哈希表的扩容
+      HashTable.prototype.resize = function(newLimit) {
+        // 1.保存旧的数组内容
+        var oldStorage = this.storage
+
+        // 2.重置所有的属性
+        this.storage = []
+        this.count = 0
+        this.limit = newLimit
+
+        // 3.遍历oldStorage中所有的bucket
+        for (var i = 0; i < oldStorage.length; i++) {
+          // 3.1取出对应的bucket
+          var bucket = oldStorage[i]
+
+          // 3.2判断bucket是否为null
+          if (bucket == null) {
+            continue
+          }
+
+          // 3.3 bucket中有数据，那么取出数据，重新插入
+          for (var j = 0; j < bucket.length; j++) {
+            var tuple = bucket[j]
+            this.put(tuple[0], tuple[1])
+          }
+        }
+      }
+```
+
+
+
