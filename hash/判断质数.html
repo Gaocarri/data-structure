@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 质数：只能被1和自己整除
+    function isPrime(num) {
+      for (var i = 2; i < num; i++) {
+        if (num % i == 0) {
+          return false
+        }
+      }
+      return true
+    }
+
+    // 更高效的方式
+    function isPrime(num) {
+      // 1.获取平方根
+      var temp = parseInt(Math.sqrt(num))
+
+      // 2.循环判断
+      for (var i = 2; i <= temp; i++) {
+        if (num % i == 0) {
+          return false
+        }
+      }
+
+      return true
+    }
+  </script>
+</body>
+
+</html>

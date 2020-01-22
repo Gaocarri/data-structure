@@ -70,7 +70,9 @@
 
         // 5.判断是否需要扩容操作
         if (this.count > this.limit * 0.75) {
-          this.resize(this.limit * 2)
+          var newSize = this.limit * 2
+          var newPrime = this.getPrime(newSize)
+          this.resize(newPrime)
         }
       }
 
@@ -116,7 +118,9 @@
         }
         // 5.缩小容量
         if (this.count > 7 && this.count < this.limit * 0.25) {
-          this.resize(Math.floor(this.limit / 2))
+          var newSize = Math.floor(this.limit / 2)
+          var newPrime = this.getPrime(newSize)
+          this.resize(newPrime)
         }
         // 6.依然没有找到那么返回null
         return null
@@ -159,6 +163,31 @@
             this.put(tuple[0], tuple[1])
           }
         }
+      }
+
+      // 判断某个数字是否是质数
+      HashTable.prototype.isPrime = function(num) {
+        // 1.获取平方根
+        var temp = parseInt(Math.sqrt(num))
+
+        // 2.循环判断
+        for (var i = 2; i <= temp; i++) {
+          if (num % i == 0) {
+            return false
+          }
+        }
+
+        return true
+      }
+
+      // 获取质数方法
+      HashTable.prototype.getPrime = function(num) {
+        // 14-->17
+        // 34-->37
+        while (!this.isPrime(num)) {
+          num++
+        }
+        return num
       }
     }
 
