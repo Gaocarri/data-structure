@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 封装二叉搜索树
+    function BinarySearchTree() {
+
+      function Node(key) {
+        this.key = key
+        this.left = null
+        this.right = null
+      }
+
+      // 属性
+      this.root = null
+
+      // 方法
+      // 插入数据
+      BinarySearchTree.prototype.insert = function(key) {
+        // 1.根据key创建节点
+        var newNode = new Node(key)
+
+        // 2.判断根节点是否有值
+        // 有
+        if (this.root == null) {
+          this.root = newNode
+        } else {
+          this.insertNode(this.root, newNode)
+        }
+        // 无
+      }
+
+      // 内部的方法
+      BinarySearchTree.prototype.insertNode = function(node, newNode) {
+        if (newNode.key < node.key) { // 向左查找
+          if (node.left == null) {
+            node.left = newNode
+          } else {
+            this.insertNode(node.left, newNode)
+          }
+        } else { // 向右查找
+          if (node.right == null) {
+            node.right = newNode
+          } else {
+            this.insert(node.right, newNode)
+          }
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
