@@ -127,6 +127,23 @@
         }
         return node.key
       }
+
+      // 搜索特定的key
+      BinarySearchTree.prototype.search = function(key) {
+        // 1.获取根节点
+        var node = this.root
+          // 2.循环搜索key
+        while (node != null) {
+          if (key < node.key) {
+            node = node.left
+          } else if (key > node.key) {
+            node = node.right
+          } else {
+            return true
+          }
+        }
+        return false
+      }
     }
 
     // 测试方法
@@ -163,6 +180,8 @@
     // 测试最值
     console.log(bst.max());
     console.log(bst.min());
+    // 测试搜索
+    console.log(bst.search(26), bst.search(11));
   </script>
 </body>
 
