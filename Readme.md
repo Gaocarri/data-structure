@@ -1609,6 +1609,89 @@ Node {
 8. 二叉搜索树的封装
 
 ```javascript
+    // 封装二叉搜索树
+    function BinarySearchTree() {
 
+      function Node(key) {
+        this.key = key
+        this.left = null
+        this.right = null
+      }
+
+      // 属性
+      this.root = null
+
+      // 方法
+      // 1.插入数据
+      BinarySearchTree.prototype.insert = function(key) {
+        // 1.根据key创建节点
+        var newNode = new Node(key)
+
+        // 2.判断根节点是否有值
+        // 有
+        if (this.root == null) {
+          this.root = newNode
+        } else {
+          this.insertNode(this.root, newNode)
+        }
+        // 无
+      }
+
+
+
+      // 内部的方法
+      BinarySearchTree.prototype.insertNode = function(node, newNode) {
+        if (newNode.key < node.key) { // 向左查找
+          if (node.left == null) {
+            node.left = newNode
+          } else {
+            this.insertNode(node.left, newNode)
+          }
+        } else { // 向右查找
+          if (node.right == null) {
+            node.right = newNode
+          } else {
+            this.insertNode(node.right, newNode)
+          }
+        }
+      }
+
+      // 树的遍历
+      // 1.先序遍历
+      BinarySearchTree.prototype.preOrderTraversal = function(handler) {
+          this.preOrderTraversalNode(this.root, handler)
+        }
+        // 内部的方法
+      BinarySearchTree.prototype.preOrderTraversalNode = function(node, handler) {
+        if (node != null) {
+          // 1.处理经过的节点
+          handler(node.key)
+
+          // 2.处理经过节点的左子节点
+          this.preOrderTraversalNode(node.left, handler)
+
+          // 3.处理经过节点的右子节点
+          this.preOrderTraversalNode(node.right, handler)
+        }
+      }
+    }
+
+    // 测试方法
+    var bst = new BinarySearchTree()
+
+    // 1.插入数据
+    bst.insert(11)
+    bst.insert(22)
+    bst.insert(13)
+    bst.insert(12)
+    bst.insert(9)
+    bst.insert(16)
+
+    // 2.测试遍历
+    var resultString = ''
+    bst.preOrderTraversal(function(key) {
+      resultString += key + ' '
+    })
+    console.log(resultString);
 ```
 
