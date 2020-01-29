@@ -1656,7 +1656,7 @@ Node {
         }
       }
 
-      // 树的遍历
+      // 2.树的遍历
       // 1.先序遍历
       BinarySearchTree.prototype.preOrderTraversal = function(handler) {
           this.preOrderTraversalNode(this.root, handler)
@@ -1667,12 +1667,81 @@ Node {
           // 1.处理经过的节点
           handler(node.key)
 
-          // 2.处理经过节点的左子节点
+          // 2.查找经过节点的左子节点
           this.preOrderTraversalNode(node.left, handler)
 
-          // 3.处理经过节点的右子节点
+          // 3.查找经过节点的右子节点
           this.preOrderTraversalNode(node.right, handler)
         }
+      }
+
+      // 2.中序遍历
+      BinarySearchTree.prototype.midOrderTraversal = function(handler) {
+        this.midOrderTraversalNode(this.root, handler)
+      }
+
+      BinarySearchTree.prototype.midOrderTraversalNode = function(node, handler) {
+        if (node != null) {
+          // 1.查找左子树中的节点
+          this.midOrderTraversalNode(node.left, handler)
+
+          // 2.处理节点
+          handler(node.key)
+
+          // 3.查找右子树中的节点
+          this.midOrderTraversalNode(node.right, handler)
+        }
+      }
+
+      // 3.后序遍历
+      BinarySearchTree.prototype.postOrderTraversal = function(handler) {
+        this.postOrderTraversalNode(this.root, handler)
+      }
+      BinarySearchTree.prototype.postOrderTraversalNode = function(node, handler) {
+        if (node != null) {
+          // 1.查找左子树的节点
+          this.postOrderTraversalNode(node.left, handler)
+            // 2.查找右子树的节点
+          this.postOrderTraversalNode(node.right, handler)
+            // 3.处理节点
+          handler(node.key)
+        }
+      }
+
+      // 3.查找最值
+      BinarySearchTree.prototype.max = function() {
+        // 1.获取根节点
+        var node = this.root
+          // 2.依次不断的向右查找，直到节点为null
+        while (node.right != null) {
+          node = node.right
+        }
+        return node.key
+      }
+
+      BinarySearchTree.prototype.min = function() {
+        var node = this.root
+        while (node.left != null) {
+          node = node.left
+        }
+        return node.key
+      }
+
+      // 搜索特定的key
+      BinarySearchTree.prototype.search = function(key) {
+        // 1.获取根节点
+        var node = this.root
+          // 2.循环搜索key
+        while (node != null) {
+          if (key < node.key) {
+            node = node.left
+          } else if (key > node.key) {
+            node = node.right
+          } else {
+            return true
+          }
+        }
+        return false
       }
     }
 
@@ -1685,13 +1754,32 @@ Node {
     bst.insert(13)
     bst.insert(12)
     bst.insert(9)
+    bst.insert(9)
     bst.insert(16)
 
-    // 2.测试遍历
+    // 2. 测试遍历
+    // 先序遍历
     var resultString = ''
     bst.preOrderTraversal(function(key) {
       resultString += key + ' '
     })
     console.log(resultString);
+    // 中序遍历
+    resultString = ''
+    bst.midOrderTraversal(function(key) {
+      resultString += key + ' '
+    })
+    console.log(resultString);
+    // 后序遍历
+    resultString = ''
+    bst.postOrderTraversal(function(key) {
+      resultString += key + ' '
+    })
+    console.log(resultString);
+    // 测试最值
+    console.log(bst.max());
+    console.log(bst.min());
+    // 测试搜索
+    console.log(bst.search(26), bst.search(11));
 ```
 
