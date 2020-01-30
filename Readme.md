@@ -1743,6 +1743,99 @@ Node {
         }
         return false
       }
+
+      // 删除节点
+      BinarySearchTree.prototype.remove = function(key) {
+        // 1.寻找要删除的节点
+        // 1.1定义变量，保存一些信息
+        var current = this.root
+        var parent = null
+        var isLeftChild = true
+          // 1.2开始寻找删除的节点
+        while (current.key != key) {
+          parent = current
+          if (key < current.key) {
+            isLeftChild = true
+            current = current.left
+          } else {
+            isLeftChild = false
+            current = current.right
+          }
+          // 某种情况：已经找到叶子节点，依然没有==key
+          if (current == null) return false
+        }
+        // 2.根据对应的情况删除节点
+        // 找到current.key==key
+        // 2.1删除的节点是叶子节点(没有子节点)
+        if (current.left == null && current.right == null) {
+          // 是根节点
+          if (current == this.root) {
+            this.root == null
+          } else if (isLeftChild) { // 叶子节点
+            parent.left = null
+          } else {
+            parent.right = null
+          }
+        }
+        // 2.2删除的节点有一个子节点
+        else if (current.right == null) {
+          if (current == this.root) {
+            this.root = current.left
+          } else if (isLeftChild) {
+            parent.left = current.left
+          } else {
+            parent.right = current.left
+          }
+        } else if (current.left == null) {
+          if (current == this.root) {
+            this.root = current.right
+          } else if (isLeftChild) {
+            parent.left = current.right
+          } else {
+            parent.right = current.right
+          }
+        }
+        // 2.3删除的节点有两个节点(后继)
+        else {
+          // 1.获取后继节点
+          var successor = this.getSuccessor(current)
+
+          // 2.判断是否是根节点
+          if (current == this.root) {
+            this.root = successor
+          } else if (isLeftChild) {
+            parent.left = successor
+          } else {
+            parent.right = successor
+          }
+
+          // 3.将删除的左子树=current.left
+          successor.left = current.left
+        }
+      }
+
+      // 找后继的方法
+      BinarySearchTree.prototype.getSuccessor = function(delNode) {
+        // 1.定义变量，保存找到的后继
+        var successor = delNode
+        var current = delNode.right
+        var successorParent = delNode
+
+        // 2.循环查找
+        while (current != null) {
+          successorParent = successor
+          successor = current
+          current = current.left
+        }
+
+        // 3.判断寻找的后继节点是否直接就是delNode的right节点
+        if (successor != delNode.right) {
+          successorParent.left = successor.right
+          successor.right = delNode.right
+        }
+
+        return successor
+      }
     }
 
     // 测试方法
