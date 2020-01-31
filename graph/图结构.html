@@ -93,6 +93,7 @@
         // 1.初始化颜色
         var colors = this.initializeColor()
           // 2.从某个顶点开始依次递归访问
+        this.dfsVisit(initV, colors, handler)
       }
 
       Graph.prototype.dfsVisit = function(v, colors, handler) {
@@ -101,8 +102,15 @@
           // 2.处理v顶点
         handler(v)
           // 3.访问v相邻的顶点
-
+        var vList = this.edges.get(v)
+        for (var i = 0; i < vList.length; i++) {
+          var e = vList[i]
+          if (colors[e] == 'white') {
+            this.dfsVisit(e, colors, handler)
+          }
+        }
         // 4.将v设置成黑色
+        colors[v] = 'black'
       }
     }
 
@@ -132,6 +140,11 @@
       // 5.测试BFS遍历
     var result = ''
     g.bfs(g.vertexes[0], function(v) {
+      result += v + ' '
+    })
+    console.log(result);
+    var result = ''
+    g.dfs(g.vertexes[0], function(v) {
       result += v + ' '
     })
     console.log(result);
