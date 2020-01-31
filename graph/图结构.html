@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./dictionary.js"></script>
+  <script>
+    // 封装图结构
+    function Graph() {
+      // 属性：顶点(数组)/边(字典)
+      this.vertexes = []
+      this.edges = new Dictionary() //边
+
+      // 方法
+      // 添加方法
+      // 1.添加顶点的方法
+      Graph.prototype.addVertex = function(v) {
+          this.vertexes.push(v)
+            // 先给顶点设置一个空的数组
+          this.edges.set(v, [])
+        }
+        // 2.添加边的方法
+      Graph.prototype.addEdge = function(v1, v2) {
+        this.edges.get(v1).push(v2)
+        this.edges.get(v2).push(v1)
+      }
+    }
+
+    // 测试代码
+    // 1.创建图结构
+    var g = new Graph()
+
+    // 2.添加顶点
+    var myVertexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    for (var i = 0; i < myVertexes.length; i++) {
+      g.addVertex(myVertexes[i])
+    }
+    // 3.添加边
+    g.addEdge('A', 'B')
+    g.addEdge('A', 'C')
+    g.addEdge('A', 'D')
+    g.addEdge('C', 'D')
+    g.addEdge('C', 'G')
+    g.addEdge('D', 'G')
+    g.addEdge('D', 'H')
+    g.addEdge('B', 'E')
+    g.addEdge('B', 'F')
+    g.addEdge('E', 'I')
+    console.log(g);
+  </script>
+</body>
+
+</html>
