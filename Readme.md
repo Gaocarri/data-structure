@@ -2106,11 +2106,152 @@ Node {
 
 8. 使用邻接表封装图
 
-```javascript
+使用到了队列和字典
 
+```javascript
+<script src="./dictionary.js"></script>
+  <script src="./queue.js"></script>
+  <script>
+    // 封装图结构
+    function Graph() {
+      // 属性：顶点(数组)/边(字典)
+      this.vertexes = []
+      this.edges = new Dictionary() //边
+
+      // 方法
+      // 添加方法
+      // 1.添加顶点的方法
+      Graph.prototype.addVertex = function(v) {
+          this.vertexes.push(v)
+            // 先给顶点设置一个空的数组
+          this.edges.set(v, [])
+        }
+        // 2.添加边的方法
+      Graph.prototype.addEdge = function(v1, v2) {
+        this.edges.get(v1).push(v2)
+        this.edges.get(v2).push(v1)
+      }
+
+      // 2.toString方法
+      Graph.prototype.toString = function() {
+          // 1.定义字符串保存当前结果
+          var resultString = ""
+
+          // 2.遍历所有的顶点，以及顶点对应的边
+          for (var i = 0; i < this.vertexes.length; i++) {
+            resultString += this.vertexes[i] + '-->'
+            var vEdges = this.edges.get(this.vertexes[i])
+            for (var j = 0; j < vEdges.length; j++) {
+              resultString += vEdges[j] + ' '
+            }
+            resultString += '\n'
+          }
+          return resultString
+        }
+        // 3.图的遍历
+        // 初始化状态颜色
+      Graph.prototype.initializeColor = function() {
+          var colors = []
+          for (var i = 0; i < this.vertexes.length; i++) {
+            colors[this.vertexes[i]] = 'white'
+          }
+          return colors
+        }
+        // 实现广度优先搜索BFS
+      Graph.prototype.bfs = function(initV, handler) {
+        // 1.初始化颜色 
+        var colors = this.initializeColor()
+          // 2.创建队列
+        var queue = new Queue()
+          // 3.将顶点加入到队列中
+        queue.enqueue(initV)
+          // 4.循环从队列中取出元素
+        while (!queue.isEmpty()) {
+          // 4.1 从队列中取出一个顶点
+          var v = queue.dequeue()
+            // 4.2获取和顶点相连的另外顶点
+          var vList = this.edges.get(v)
+            // 4.3将v的颜色设置成灰色
+          colors[v] = 'gray'
+            // 4.4遍历所有的顶点，加入到队列中
+          for (var i = 0; i < vList.length; i++) {
+            var e = vList[i]
+            if (colors[e] == 'white') {
+              colors[e] = 'gray' // 就不会重复加了
+              queue.enqueue(e)
+            }
+          }
+          // 4.5访问顶点
+          handler(v)
+            // 4.6将顶点设置为黑色
+          colors[v] = 'black'
+        }
+      }
+
+      // 深度优先搜索DFS
+      Graph.prototype.dfs = function(initV, handler) {
+        // 1.初始化颜色
+        var colors = this.initializeColor()
+          // 2.从某个顶点开始依次递归访问
+        this.dfsVisit(initV, colors, handler)
+      }
+
+      Graph.prototype.dfsVisit = function(v, colors, handler) {
+        // 1.将颜色设置为灰色
+        colors[v] = 'grey'
+          // 2.处理v顶点
+        handler(v)
+          // 3.访问v相邻的顶点
+        var vList = this.edges.get(v)
+        for (var i = 0; i < vList.length; i++) {
+          var e = vList[i]
+          if (colors[e] == 'white') {
+            this.dfsVisit(e, colors, handler)
+          }
+        }
+        // 4.将v设置成黑色
+        colors[v] = 'black'
+      }
+    }
+
+    // 测试代码
+    // 1.创建图结构
+    var g = new Graph()
+
+    // 2.添加顶点
+    var myVertexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    for (var i = 0; i < myVertexes.length; i++) {
+      g.addVertex(myVertexes[i])
+    }
+    // 3.添加边
+    g.addEdge('A', 'B')
+    g.addEdge('A', 'C')
+    g.addEdge('A', 'D')
+    g.addEdge('C', 'D')
+    g.addEdge('C', 'G')
+    g.addEdge('D', 'G')
+    g.addEdge('D', 'H')
+    g.addEdge('B', 'E')
+    g.addEdge('B', 'F')
+    g.addEdge('E', 'I')
+    console.log(g);
+    // 4.测试toString
+    console.log(g.toString())
+      // 5.测试BFS遍历
+    var result = ''
+    g.bfs(g.vertexes[0], function(v) {
+      result += v + ' '
+    })
+    console.log(result);
+    var result = ''
+    g.dfs(g.vertexes[0], function(v) {
+      result += v + ' '
+    })
+    console.log(result);
+  </script>
 ```
 
-9. 图的遍历
+1. 图的遍历
 
 * 图的遍历思想
   * 图的遍历思想和树的遍历思想是一样的
