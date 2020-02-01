@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 创建列表类
+    function ArrayList() {
+      // 属性
+      this.array = []
+
+      // 方法
+      // 将数据可以插入到数组中的方法
+      ArrayList.prototype.insert = function(item) {
+        this.array.push(item)
+      }
+
+      // toString
+      ArrayList.prototype.toString = function() {
+        return this.array.join('-')
+      }
+
+      // 插入排序
+      ArrayList.prototype.insertionSort = function() {
+        // 1.获取数组的长度
+        var length = this.array.length
+
+        // 2.外层循环：从第一个位置开始获取数据，向前面局部有序进行插入
+        for (var i = 1; i < length; i++) {
+          // 3.内层循环：获取i位置元素，和前面的数据依次进行比较
+          var temp = this.array[i]
+          var j = i
+          while (this.array[j - 1] > temp && j > 0) {
+            this.array[j] = this.array[j - 1]
+            j--
+          }
+          // 4.将j位置的数据，放置temp就可以了
+          this.array[j] = temp
+        }
+      }
+    }
+
+    // 测试类
+    var list = new ArrayList()
+    list.insert(66)
+    list.insert(76)
+    list.insert(46)
+    list.insert(36)
+    list.insert(26)
+    list.insert(16)
+    list.insert(6)
+    console.log(list.toString());
+  </script>
+</body>
+
+</html>

@@ -2273,6 +2273,68 @@ Node {
   * 灰色：表示该顶点被访问过，但未被探索
   * 黑色：表示该顶点被访问且被完全探索过
 
-  
+
+
+## 排序算法
+
+1. 大O表示法
+
+* 在算法描述中，我们可以通过类似按人数划分企业规模的方式来描述计算机算法的效率
+* 这种粗略的度量称为‘**大O表示法**‘
+* 常见形式(括号中可以理解为操作的次数)
+  * O(1)常数的
+  * O(log(n))对数的
+  * O(n)线性的
+  * O(nlog(n))线性和对数乘积
+  * O(n^2)平方
+  * O(2^n)指数的 
+* 推导大O表示法的方式
+  * 用常量1取代运行时间中的所有加法常量
+  * 在修改后的运行次数函数中，只保留最高阶项（比如2N^2+3N+1只保留2N^2）
+  * 如果最高存在不为1，则取出与这个项相乘的常数(比如2N^2去除系数2)
+
+2. 插入排序
+
+```javascript
+  <script>
+    // 创建列表类
+    function ArrayList() {
+      // 属性
+      this.array = []
+
+      // 方法
+      // 将数据可以插入到数组中的方法
+      ArrayList.prototype.insert = function(item) {
+        this.array.push(item)
+      }
+
+      // toString
+      ArrayList.prototype.toString = function() {
+        return this.array.join('-')
+      }
+
+      // 插入排序
+      ArrayList.prototype.insertionSort = function() {
+        // 1.获取数组的长度
+        var length = this.array.length
+
+        // 2.外层循环：从第一个位置开始获取数据，向前面局部有序进行插入
+        for (var i = 1; i < length; i++) {
+          // 3.内层循环：获取i位置元素，和前面的数据依次进行比较
+          var temp = this.array[i]
+          var j = i
+          while (this.array[j - 1] > temp && j > 0) {
+            this.array[j] = this.array[j - 1]
+            j--
+          }
+          // 4.将j位置的数据，放置temp就可以了
+          this.array[j] = temp
+        }
+      }
+    }
+</script>
+```
+
+
 
   
